@@ -39,7 +39,7 @@ pipeline {
     stage('Build on x86_64') {
       steps {
         dir('ghaf') {
-          sh 'nix build github:tiiuae/FMO-OS#fmo-os-rugged-laptop-7330-public-debug'
+          sh 'nix build --accept-flake-config github:tiiuae/FMO-OS#fmo-os-rugged-laptop-7330-public-debug'
 //          sh 'nix build github:tiiuae/FMO-OS#fmo-os-rugged-laptop-7330-public-release'
 //          sh 'nix build github:tiiuae/FMO-OS#fmo-os-rugged-tablet-7230-public-debug'
 //          sh 'nix build github:tiiuae/FMO-OS#fmo-os-rugged-tablet-7230-public-release'
