@@ -27,7 +27,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        dir('ghaf') {
+        dir('fmo') {
           checkout scmGit(
             branches: [[name: params.BRANCH]],
             extensions: [cleanBeforeCheckout()],
@@ -38,8 +38,8 @@ pipeline {
     }
     stage('Build on x86_64') {
       steps {
-        dir('ghaf') {
-          sh 'nix build --accept-flake-config github:tiiuae/FMO-OS#fmo-os-rugged-laptop-7330-public-debug'
+        dir('fmo') {
+          sh 'nix build --accept-flake-config github:tiiuae/FMO-OS#fmo-os-rugged-laptop-7330-public-debug -o result-rugged-laptop-7330-public-debug'
 //          sh 'nix build github:tiiuae/FMO-OS#fmo-os-rugged-laptop-7330-public-release'
 //          sh 'nix build github:tiiuae/FMO-OS#fmo-os-rugged-tablet-7230-public-debug'
 //          sh 'nix build github:tiiuae/FMO-OS#fmo-os-rugged-tablet-7230-public-release'
@@ -50,14 +50,14 @@ pipeline {
     }
     stage('SBOM') {
       steps {
-        dir('ghaf') {
+        dir('fmo') {
           sh 'nix run github:tiiuae/sbomnix/a1f0f88d719687acedd989899ecd7fafab42394c#sbomnix -- .#fmo-os-rugged-laptop-7330-public-debug --csv result-fmo-os-rugged-laptop-7330-public-debug.csv --cdx result-fmo-os-rugged-laptop-7330-public-debug.cdx.json --spdx result-fmo-os-rugged-laptop-7330-public-debug.spdx.json'
         }
       }
     }
     stage('Vulnxscan runtime') {
       steps {
-        dir('ghaf') {
+        dir('fmo') {
           sh 'nix run github:tiiuae/sbomnix/a1f0f88d719687acedd989899ecd7fafab42394c#vulnxscan -- .#fmo-os-rugged-laptop-7330-public-debug --out result-vulns-fmo-os-rugged-laptop-7330-public-debug.csv'
         }
       }
@@ -65,9 +65,9 @@ pipeline {
   }
   post {
     always {
-      archiveArtifacts allowEmptyArchive: true, artifacts: "ghaf/result-*"
-      archiveArtifacts allowEmptyArchive: true, artifacts: "ghaf/result-*/**"
-      archiveArtifacts allowEmptyArchive: true, artifacts: "ghaf/result-aarch64*/**"
+      archiveArtifacts allowEmptyArchive: true, artifacts: "fmo/result-*"
+      archiveArtifacts allowEmptyArchive: true, artifacts: "fmo/result-*/**"
+      archiveArtifacts allowEmptyArchive: true, artifacts: "fmo/result-aarch64*/**"
     }
   }
 }
