@@ -77,7 +77,6 @@ pipeline {
     always {
       archiveArtifacts allowEmptyArchive: true, artifacts: "fmo/result-*"
       archiveArtifacts allowEmptyArchive: true, artifacts: "fmo/result-*/**"
-      archiveArtifacts allowEmptyArchive: true, artifacts: "fmo/result-aarch64*/**"
     }
   }
 }
